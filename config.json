@@ -1,0 +1,7 @@
+{
+  "mode": "PAPER",
+  "max-loss": 50,
+  "strategies": ["breakout"],
+  "notional-position-value": 1000,
+  "breakout_symbols": ["AAPL", "GRPN", "NVDA"]
+}
