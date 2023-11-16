@@ -25,7 +25,7 @@ class Breakout(IBapi):
         current_price = df.iloc[0, 1]
         quantity = round(self.notional_value / current_price, 0)
         self.reqHistoricalData(
-            1, self.contract, "", "2 D", "1 day", "ASK", 0, 2, False, []
+            1, self.contract, "", "2 D", "1 day", "ASK", 1, 2, False, []
         )
         time.sleep(2)
         df = pd.DataFrame(self.data, columns=["DateTime", "Close", "High"])

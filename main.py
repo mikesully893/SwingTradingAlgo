@@ -5,6 +5,7 @@ import json
 from datetime import datetime
 
 from strategies.breakout import Breakout
+from strategies.guvcga import Guvcga
 
 
 def run_algorithm(config):
@@ -20,7 +21,7 @@ def run_algorithm(config):
 
     for symbol in symbols:
         print(f"Starting for loop for {symbol}...")
-        breakout_trade = Breakout(symbol, trade_value, max_loss)
+        breakout_trade = Guvcga(symbol, trade_value, max_loss)
         breakout_trade.start_thread()
         breakout_trade.prepare_orders()
         breakout_trade.finish_thread()
