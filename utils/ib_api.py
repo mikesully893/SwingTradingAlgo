@@ -1,3 +1,6 @@
+import threading
+import time
+
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
 from ibapi.order import Order
@@ -73,6 +76,20 @@ class IBapi(EWrapper, EClient):
             execution.lastLiquidity,
         )
 
+    def run_app(self):
+        self.run()
+
+    def start_thread(self):
+        self.connect("127.0.0.1", 7497, 123)
+        api_thread = threading.Thread(target=self.run_app, daemon=True)
+        api_thread.start()
+        time.sleep(1)
+        print(api_thread.name)
+
+    def finish_thread(self):
+        time.sleep(2)
+        self.disconnect()
+
     def create_order(
         self, order_type, quantity, price, order_ref, action="BUY", transmit=False
     ):
@@ -95,6 +112,7 @@ class IBapi(EWrapper, EClient):
         stop_order.totalQuantity = quantity
         stop_order.orderType = "STP"
         stop_order.auxPrice = price
+        stop_order.tif = "GTC"
         stop_order.orderId = self.nextorderId
         stop_order.orderRef = order_ref
         self.nextorderId += 1

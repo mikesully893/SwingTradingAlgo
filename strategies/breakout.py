@@ -1,5 +1,4 @@
 import time
-import threading
 from datetime import datetime
 
 import pandas as pd
@@ -17,25 +16,9 @@ class Breakout(IBapi):
         self.nextorderId = 0
         self.contract = stock_contract(symbol)
 
-    def run_app(self):
-        print(f"Preparing to start thread for {self.symbol}..")
-        self.run()
-
-    def start_thread(self):
-        self.connect("127.0.0.1", 7497, 123)
-        api_thread = threading.Thread(target=self.run_app, daemon=True)
-        api_thread.start()
-        time.sleep(1)
-        print(api_thread.name)
-
-    def finish_thread(self):
-        time.sleep(5)
-        print(f"Finishing thread for {self.symbol}")
-        self.disconnect()
-
     def prepare_orders(self):
         self.reqHistoricalData(
-            1, self.contract, "", "120 S", "1 min", "ASK", 0, 2, False, []
+            1, self.contract, "", "180 S", "1 min", "ASK", 0, 2, False, []
         )
         time.sleep(2)
         df = pd.DataFrame(self.data, columns=["DateTime", "Close", "High"])
