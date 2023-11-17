@@ -20,8 +20,9 @@ def run_algorithm(config):
         max_loss = None
 
     for symbol in symbols:
+        # TODO: Add logic to run these in parallel
         print(f"Starting for loop for {symbol}...")
-        breakout_trade = Guvcga(symbol, trade_value, max_loss)
+        breakout_trade = Breakout(symbol, trade_value, max_loss)
         breakout_trade.start_thread()
         breakout_trade.prepare_orders()
         breakout_trade.finish_thread()

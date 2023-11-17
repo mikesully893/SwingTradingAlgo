@@ -1,9 +1,15 @@
+import sys
 import threading
 import time
 
 from ibapi.client import EClient
 from ibapi.wrapper import EWrapper
 from ibapi.order import Order
+
+import logging
+
+
+logger = logging.getLogger("algo_logger.ibapi")
 
 
 class IBapi(EWrapper, EClient):
@@ -77,6 +83,7 @@ class IBapi(EWrapper, EClient):
         )
 
     def run_app(self):
+        logger.info("About to run...")
         self.run()
 
     def start_thread(self):
