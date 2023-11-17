@@ -2,9 +2,9 @@ import logging
 import sys
 
 logging.basicConfig(
-            stream=sys.stdout,
-            level=logging.DEBUG,
-            format="%(asctime)s - %(levelname)s - %(message)s",
-        )
+    stream=sys.stdout,
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
 
 logger = logging.getLogger("algo_logger")
