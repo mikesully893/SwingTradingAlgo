@@ -40,7 +40,9 @@ def run_algorithm(config):
         for strategy_name in strategies:
             symbols_key = f"{strategy_name.lower()}_symbols"
             symbols = config_json[symbols_key]
-            future = executor.submit(run_strategy, strategy_name, symbols, trade_value, max_loss)
+            future = executor.submit(
+                run_strategy, strategy_name, symbols, trade_value, max_loss
+            )
             futures.append(future)
 
         for future in futures:
