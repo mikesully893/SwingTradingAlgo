@@ -1,25 +1,18 @@
 import time
 from datetime import datetime
+import logging
 
 import pandas as pd
 
-from utils.utils import stock_contract
-from utils.ib_api import IBapi
-import utils.setup_logger
-import logging
+from strategies.base_strategy import BaseStrategy
 
 
-logger = logging.getLogger("algo_logger.breakout")
+logger = logging.getLogger(__name__)
 
 
-class Breakout(IBapi):
+class Breakout(BaseStrategy):
     def __init__(self, symbol, notional_value, max_loss):
-        super().__init__()
-        self.symbol = symbol
-        self.notional_value = notional_value
-        self.max_loss = max_loss
-        self.nextorderId = 0
-        self.contract = stock_contract(symbol)
+        super().__init__(symbol, notional_value, max_loss, "Breakout")
 
     def prepare_orders(self):
         self.reqHistoricalData(
@@ -44,6 +37,6 @@ class Breakout(IBapi):
         order = self.create_order("STP", quantity, entry_price, order_ref)
         stop_order = self.create_stop_loss(order, quantity, stop_price, order_ref)
 
-        logger.info("Testing placing a trade now")
+        # logger.info("Testing placing a trade now")
         self.placeOrder(order.orderId, self.contract, order)
         self.placeOrder(stop_order.orderId, self.contract, stop_order)

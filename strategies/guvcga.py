@@ -1,21 +1,19 @@
+import logging
 import time
 from datetime import datetime
 
 import pandas as pd
 
-from utils.utils import stock_contract
-from utils.ib_api import IBapi
+from strategies.base_strategy import BaseStrategy
 
 
-class Guvcga(IBapi):
+logger = logging.getLogger(__name__)
+
+
+class Guvcga(BaseStrategy):
     def __init__(self, symbol, notional_value, max_loss):
-        super().__init__()
-        self.symbol = symbol
-        self.notional_value = notional_value
-        self.max_loss = max_loss
+        super().__init__(symbol, notional_value, max_loss, "Guvcga")
         self.half_position_loss = 10
-        self.nextorderId = 0
-        self.contract = stock_contract(symbol)
 
     def prepare_orders(self):
         self.reqHistoricalData(
@@ -30,9 +28,11 @@ class Guvcga(IBapi):
         )
         time.sleep(2)
         df = pd.DataFrame(self.data, columns=["DateTime", "Close", "High"])
+
+        half_position_loss = 10
         entry_price = round(df.iloc[-2, 2] + 0.02, 2)
         stop_price_1 = round(
-            ((float(entry_price) * quantity) - self.half_position_loss) / quantity, 2
+            ((float(entry_price) * quantity) - half_position_loss) / quantity, 2
         )
         stop_price_2 = round(
             ((float(entry_price) * quantity) - self.max_loss) / quantity, 2

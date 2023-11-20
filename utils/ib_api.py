@@ -9,7 +9,7 @@ from ibapi.order import Order
 import logging
 
 
-logger = logging.getLogger("algo_logger.ibapi")
+logger = logging.getLogger(__name__)
 
 
 class IBapi(EWrapper, EClient):
@@ -91,6 +91,7 @@ class IBapi(EWrapper, EClient):
         api_thread = threading.Thread(target=self.run_app, daemon=True)
         api_thread.start()
         time.sleep(1)
+        self.run()
         print(api_thread.name)
 
     def finish_thread(self):

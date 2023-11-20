@@ -1,7 +1,8 @@
 {
   "mode": "PAPER",
-  "max-loss": 50,
-  "strategies": ["breakout"],
-  "notional-position-value": 1000,
-  "breakout_symbols": ["NVDA"]
+  "max_loss": 50,
+  "strategies": ["Breakout"],
+  "notional_position_value": 1000,
+  "breakout_symbols": ["NVDA", "MSFT"],
+  "guvcga_symbols": ["AAPL", "AMZN"]
 }
