@@ -82,22 +82,6 @@ class IBapi(EWrapper, EClient):
             execution.lastLiquidity,
         )
 
-    def run_app(self):
-        logger.info("About to run...")
-        self.run()
-
-    def start_thread(self):
-        self.connect("127.0.0.1", 7497, 123)
-        api_thread = threading.Thread(target=self.run_app, daemon=True)
-        api_thread.start()
-        time.sleep(1)
-        self.run()
-        print(api_thread.name)
-
-    def finish_thread(self):
-        time.sleep(2)
-        self.disconnect()
-
     def create_order(
         self, order_type, quantity, price, order_ref, action="BUY", transmit=False
     ):
@@ -127,6 +111,21 @@ class IBapi(EWrapper, EClient):
         stop_order.parentId = parent_order.orderId
         parent_order.transmit = transmit
         return stop_order
+
+    def start_thread(self):
+        self.connect("127.0.0.1", 7497, 123)
+        api_thread = threading.Thread(target=self.run_app, daemon=True)
+        api_thread.start()
+        time.sleep(1)
+        print(api_thread.name)
+
+    def finish_thread(self):
+        time.sleep(2)
+        self.disconnect()
+
+    def run_app(self):
+        logger.info("About to run...")
+        self.run()
 
     # def error(self, reqId, errorCode, errorString, advancedOrderRejectJson):
     #     if errorCode == 202:
