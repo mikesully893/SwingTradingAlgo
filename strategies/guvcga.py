@@ -29,10 +29,9 @@ class Guvcga(BaseStrategy):
         time.sleep(2)
         df = pd.DataFrame(self.data, columns=["DateTime", "Close", "High"])
 
-        half_position_loss = 10
         entry_price = round(df.iloc[-2, 2] + 0.02, 2)
         stop_price_1 = round(
-            ((float(entry_price) * quantity) - half_position_loss) / quantity, 2
+            ((float(entry_price) * quantity) - self.half_position_loss) / quantity, 2
         )
         stop_price_2 = round(
             ((float(entry_price) * quantity) - self.max_loss) / quantity, 2
