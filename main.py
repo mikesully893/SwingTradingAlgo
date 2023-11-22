@@ -1,9 +1,6 @@
-import os
-import pause
 import argparse
 import json
-from datetime import datetime
-from concurrent.futures import ProcessPoolExecutor
+
 from strategies.breakout import Breakout
 from strategies.guvcga import Guvcga
 from utils.utils import validate_config_symbols
@@ -25,11 +22,8 @@ def run_strategy(strategy_name, symbols, trade_value, max_loss):
 
 
 def run_algorithm(config):
-    # TODO: Add config validation
     with open(config) as file:
         config_json = json.load(file)
-    # symbols = config_json["breakout_symbols"]
-    # symbols = validate_config_symbols(symbols)
     strategies = config_json["strategies"]
     trade_value = config_json["notional_position_value"]
     if "max_loss" in config_json:
@@ -37,27 +31,11 @@ def run_algorithm(config):
     else:
         max_loss = None
 
-    with ProcessPoolExecutor() as executor:
-        futures = []
-        for strategy_name in strategies:
-            symbols_key = f"{strategy_name.lower()}_symbols"
-            symbols = config_json[symbols_key]
-            symbols = validate_config_symbols(symbols)
-            future = executor.submit(
-                run_strategy, strategy_name, symbols, trade_value, max_loss
-            )
-            futures.append(future)
-
-        for future in futures:
-            future.result()
-
-    # for symbol in symbols:
-    #     # TODO: Add logic to run these in parallel
-    #     print(f"Starting for loop for {symbol}...")
-    #     breakout_trade = Breakout(symbol, trade_value, max_loss)
-    #     breakout_trade.start_thread()
-    #     breakout_trade.prepare_orders()
-    #     breakout_trade.finish_thread()
+    for strategy_name in strategies:
+        symbols_key = f"{strategy_name.lower()}_symbols"
+        symbols = config_json[symbols_key]
+        symbols = validate_config_symbols(symbols)
+        run_strategy(strategy_name, symbols, trade_value, max_loss)
 
 
 if __name__ == "__main__":
