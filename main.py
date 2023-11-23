@@ -3,7 +3,7 @@ import json
 
 from strategies.breakout import Breakout
 from strategies.guvcga import Guvcga
-from utils.utils import validate_config_symbols
+from utils.validation import validate_config_symbols, validate_config_json
 
 
 def run_strategy(strategy_name, symbols, trade_value, max_loss):
@@ -24,6 +24,7 @@ def run_strategy(strategy_name, symbols, trade_value, max_loss):
 def run_algorithm(config):
     with open(config) as file:
         config_json = json.load(file)
+        valid_config = validate_config_json(config_json)
     strategies = config_json["strategies"]
     trade_value = config_json["notional_position_value"]
     if "max_loss" in config_json:
