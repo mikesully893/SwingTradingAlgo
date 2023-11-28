@@ -3,6 +3,7 @@ import json
 
 from strategies.breakout import Breakout
 from strategies.guvcga import Guvcga
+from utils.exceptions import UnknownStrategyError
 from utils.validation import validate_config_symbols, validate_config_json
 
 
@@ -14,7 +15,7 @@ def run_strategy(strategy_name, symbols, trade_value, max_loss):
         elif strategy_name == "Guvcga":
             strategy = Guvcga(symbol, trade_value, max_loss)
         else:
-            raise ValueError(f"Unknown strategy: {strategy_name}")
+            raise UnknownStrategyError(f"Unknown strategy: {strategy_name}")
 
         strategy.start_thread()
         strategy.prepare_orders()
@@ -24,11 +25,11 @@ def run_strategy(strategy_name, symbols, trade_value, max_loss):
 def run_algorithm(config):
     with open(config) as file:
         config_json = json.load(file)
-        valid_config = validate_config_json(config_json)
-    strategies = config_json["strategies"]
-    trade_value = config_json["notional_position_value"]
-    if "max_loss" in config_json:
-        max_loss = config_json["max_loss"]
+    valid_config = validate_config_json(config_json)
+    strategies = valid_config["strategies"]
+    trade_value = valid_config["notional_position_value"]
+    if "max_loss" in valid_config:
+        max_loss = valid_config["max_loss"]
     else:
         max_loss = None
 
