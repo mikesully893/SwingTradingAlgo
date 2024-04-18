@@ -50,5 +50,4 @@ if __name__ == "__main__":
         help="Path to config file. If omitted the config in the root directory of the project will be used.",
     )
     args = parser.parse_args()
-    # pause.until(datetime(2023, 11, 14, 14, 36))
     run_algorithm(args.config)

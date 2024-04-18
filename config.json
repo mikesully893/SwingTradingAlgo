@@ -3,6 +3,6 @@
   "max_loss": 50,
   "strategies": ["Breakout", "Guvcga"],
   "notional_position_value": 1000,
-  "breakout_symbols": ["NVDA", "MSFT", "TSLA"],
+  "breakout_symbols": [ "MSFT", "TSLA"],
   "guvcga_symbols": ["AAPL"]
 }
